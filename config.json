@@ -1,0 +1,12 @@
+{
+  "botToken": "1234567890:ABCDEFGHIJKLMNOP_qrstuvwxyz12345678",
+  "plugins": [
+    "dev.inmo.plagubot.HelloPlugin"
+  ],
+  "helloPlugin": {
+    "print": "Hello World"
+  },
+  "database": {
+    "url": "jdbc:sqlite:file:local.db?mode=memory&cache=shared"
+  }
+}

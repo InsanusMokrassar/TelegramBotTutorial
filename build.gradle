@@ -1,0 +1,30 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath libs.kotlin.gradle.plugin
+        classpath libs.kotlin.serialization.plugin
+    }
+}
+
+plugins {
+    alias libs.plugins.kotlin.jvm
+    alias libs.plugins.kotlin.serialization
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation libs.kotlin
+    implementation libs.plagubot
+}
+
+application {
+    mainClassName = 'dev.inmo.plagubot.AppKt'
+}
