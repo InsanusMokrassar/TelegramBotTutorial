@@ -1,7 +1,5 @@
 # Telegram Bot Tutorial
 
-This tutorial aimed to show how you may break your bot parts into different modules and run it easily change the 
-
 ## Introduction before introduction :)
 
 This project uses [Gradle](https://gradle.org) build tool and there is high chance to see gradle in the other kotlin configuration.
