@@ -18,7 +18,7 @@ import org.koin.core.module.Module
  * Replace [pluginConfigSectionName] value with your one to customize configuration section name
  */
 @Serializable
-class TemplatePlugin : Plugin {
+class WelcomePlugin : Plugin {
     /**
      * Default logger of [WelcomePlugin] got with [logger]
      */
@@ -55,6 +55,6 @@ class TemplatePlugin : Plugin {
     }
 
     companion object {
-        private const val pluginConfigSectionName = "new"
+        private const val pluginConfigSectionName = "welcome"
     }
 }

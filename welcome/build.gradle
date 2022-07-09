@@ -1,0 +1,26 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath libs.kotlin.gradle.plugin
+        classpath libs.kotlin.serialization.plugin
+    }
+}
+
+plugins {
+    alias libs.plugins.kotlin.jvm
+    alias libs.plugins.kotlin.serialization
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation libs.kotlin
+    api libs.plagubot.plugin
+    api libs.kslog
+}
