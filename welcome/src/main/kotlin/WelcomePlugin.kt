@@ -58,7 +58,7 @@ class WelcomePlugin : Plugin {
      */
     @Serializable
     private class Config(
-        val recheckOfAdmin: MilliSeconds = 60L
+        val recheckOfAdmin: MilliSeconds = 60000L
     )
 
     /**
