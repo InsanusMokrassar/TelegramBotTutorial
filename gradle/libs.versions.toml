@@ -1,14 +1,16 @@
 [versions]
 
 kotlin = "1.6.21"
-plagubot = "1.2.2"
+plagubot = "1.2.3"
 kslog = "0.3.2"
+plagubot-commands = "0.1.0"
 
 [libraries]
 
 kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 plagubot = { module = "dev.inmo:plagubot.bot", version.ref = "plagubot" }
 plagubot-plugin = { module = "dev.inmo:plagubot.plugin", version.ref = "plagubot" }
+plagubot-commands = { module = "dev.inmo:plagubot.plugins.commands", version.ref = "plagubot-commands" }
 kslog = { module = "dev.inmo:kslog", version.ref = "kslog" }
 
 # Libs for classpath
