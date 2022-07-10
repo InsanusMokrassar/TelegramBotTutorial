@@ -10,10 +10,9 @@ import dev.inmo.tgbotapi.extensions.api.answers.answer
 import dev.inmo.tgbotapi.extensions.api.chat.get.getChatAdministrators
 import dev.inmo.tgbotapi.extensions.api.edit.edit
 import dev.inmo.tgbotapi.extensions.api.send.*
-import dev.inmo.tgbotapi.extensions.behaviour_builder.BehaviourContext
+import dev.inmo.tgbotapi.extensions.behaviour_builder.*
 import dev.inmo.tgbotapi.extensions.behaviour_builder.expectations.waitContentMessage
 import dev.inmo.tgbotapi.extensions.behaviour_builder.expectations.waitMessageDataCallbackQuery
-import dev.inmo.tgbotapi.extensions.behaviour_builder.oneOf
 import dev.inmo.tgbotapi.extensions.behaviour_builder.triggers_handling.*
 import dev.inmo.tgbotapi.extensions.utils.*
 import dev.inmo.tgbotapi.extensions.utils.formatting.*
@@ -93,34 +92,31 @@ class WelcomePlugin : Plugin {
             )
 
             oneOf(
-                async {
+                parallel {
                     val query = waitMessageDataCallbackQuery().filter {
                         it.data == unsetData
                             && it.message.chat.id == sentMessage.chat.id
                             && it.message.messageId == sentMessage.messageId
                     }.first()
 
-                    if (welcomeTable.unset(groupMessage.chat.id)) {
-                        edit(
-                            sentMessage,
-                            buildEntities {
-                                regular("Welcome message has been removed for chat ")
-                                underline(groupMessage.chat.title)
-                            }
-                        )
-                    } else {
-                        edit(
-                            sentMessage,
-                            buildEntities {
-                                regular("Something went wrong on welcome message unsetting for chat ")
-                                underline(groupMessage.chat.title)
-                            }
-                        )
+                    val answerEntities = buildEntities {
+                        if (welcomeTable.unset(groupMessage.chat.id)) {
+                            regular("Welcome message has been removed for chat ")
+                            underline(groupMessage.chat.title)
+                        } else {
+                            regular("Something went wrong on welcome message unsetting for chat ")
+                            underline(groupMessage.chat.title)
+                        }
                     }
+
+                    edit(
+                        sentMessage,
+                        answerEntities
+                    )
 
                     answer(query)
                 },
-                async {
+                parallel {
                     val query = waitMessageDataCallbackQuery().filter {
                         it.data == cancelData
                             && it.message.chat.id == sentMessage.chat.id
@@ -137,7 +133,7 @@ class WelcomePlugin : Plugin {
 
                     answer(query)
                 },
-                async {
+                parallel {
                     val message = waitContentMessage().filter {
                         it.chat.id == sentMessage.chat.id
                     }.first()
@@ -150,27 +146,23 @@ class WelcomePlugin : Plugin {
                         )
                     )
 
-                    if (success) {
-                        reply(
-                            message,
-                            buildEntities {
-                                regular("Welcome message has been changed for chat ")
-                                underline(groupMessage.chat.title)
-                                regular(".\n\n")
-                                bold("Please, do not delete this message if you want it to work and don't stop this bot to keep welcome message works right")
-                            }
-                        )
-                    } else {
-                        reply(
-                            message,
-                            buildEntities {
-                                regular("Something went wrong on welcome message changing for chat ")
-                                underline(groupMessage.chat.title)
-                            }
-                        )
+                    val entities = buildEntities {
+                        if (success) {
+                            regular("Welcome message has been changed for chat ")
+                            underline(groupMessage.chat.title)
+                            regular(".\n\n")
+                            bold("Please, do not delete this message if you want it to work and don't stop this bot to keep welcome message works right")
+                        } else {
+                            regular("Something went wrong on welcome message changing for chat ")
+                            underline(groupMessage.chat.title)
+                        }
                     }
+                    reply(
+                        message,
+                        entities
+                    )
                 },
-                async {
+                parallel {
                     while (isActive) {
                         delay(config.recheckOfAdmin)
 
