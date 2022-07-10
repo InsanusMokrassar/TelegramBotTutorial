@@ -78,9 +78,6 @@ class WelcomePlugin : Plugin {
         val user = groupMessage.user
 
         if (userIsAdmin(user, groupMessage.chat)) {
-            val cancelData = "cancel_${groupMessage.chat.id}"
-            val unsetData = "unset_${groupMessage.chat.id}"
-
             val sentMessage = sendMessage(
                 user,
                 buildEntities {
@@ -197,9 +194,7 @@ class WelcomePlugin : Plugin {
 
         onCommand(
             "welcome",
-            initialFilter = {
-                it.chat is GroupChat
-            }
+            initialFilter = { it.chat is GroupChat }
         ) {
             it.whenCommonGroupContentMessage { groupMessage ->
                 launch {
@@ -216,8 +211,8 @@ class WelcomePlugin : Plugin {
             }
 
             try {
-                copyMessage(
-                    it.chat.id,
+                reply(
+                    it,
                     chatSettings.sourceChatId,
                     chatSettings.sourceMessageId
                 )
@@ -225,14 +220,11 @@ class WelcomePlugin : Plugin {
                 welcomeTable.unset(it.chat.id)
             }
         }
-
-
-        allUpdatesFlow.subscribeSafelyWithoutExceptions(scope) {
-            println(it)
-        }
     }
 
     companion object {
         private const val pluginConfigSectionName = "welcome"
+        private const val cancelData = "cancel"
+        private const val unsetData = "unset"
     }
 }
