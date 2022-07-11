@@ -15,6 +15,8 @@ import dev.inmo.tgbotapi.extensions.behaviour_builder.expectations.waitContentMe
 import dev.inmo.tgbotapi.extensions.behaviour_builder.expectations.waitMessageDataCallbackQuery
 import dev.inmo.tgbotapi.extensions.behaviour_builder.triggers_handling.*
 import dev.inmo.tgbotapi.extensions.utils.*
+import dev.inmo.tgbotapi.extensions.utils.extensions.sameChat
+import dev.inmo.tgbotapi.extensions.utils.extensions.sameMessage
 import dev.inmo.tgbotapi.extensions.utils.formatting.*
 import dev.inmo.tgbotapi.extensions.utils.types.buttons.*
 import dev.inmo.tgbotapi.types.BotCommand
@@ -83,20 +85,16 @@ class WelcomePlugin : Plugin {
                     regular("Ok, send me the message which should be used as welcome message for chat ")
                     underline(groupMessage.chat.title)
                 },
-                replyMarkup = inlineKeyboard {
-                    row {
-                        dataButton("Unset", unsetData)
-                        dataButton("Cancel", cancelData)
-                    }
+                replyMarkup = flatInlineKeyboard {
+                    dataButton("Unset", unsetData)
+                    dataButton("Cancel", cancelData)
                 }
             )
 
             oneOf(
                 parallel {
                     val query = waitMessageDataCallbackQuery().filter {
-                        it.data == unsetData
-                            && it.message.chat.id == sentMessage.chat.id
-                            && it.message.messageId == sentMessage.messageId
+                        it.data == unsetData && it.message.sameMessage(sentMessage)
                     }.first()
 
                     val answerEntities = buildEntities {
@@ -118,9 +116,7 @@ class WelcomePlugin : Plugin {
                 },
                 parallel {
                     val query = waitMessageDataCallbackQuery().filter {
-                        it.data == cancelData
-                            && it.message.chat.id == sentMessage.chat.id
-                            && it.message.messageId == sentMessage.messageId
+                        it.data == cancelData && it.message.sameMessage(sentMessage)
                     }.first()
 
                     edit(
@@ -135,7 +131,7 @@ class WelcomePlugin : Plugin {
                 },
                 parallel {
                     val message = waitContentMessage().filter {
-                        it.chat.id == sentMessage.chat.id
+                        it.sameChat(sentMessage)
                     }.first()
 
                     val success = welcomeTable.set(
