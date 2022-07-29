@@ -23,4 +23,5 @@ dependencies {
     implementation libs.kotlin
     api libs.plagubot.plugin
     api libs.kslog
+    api libs.plagubot.commands
 }
