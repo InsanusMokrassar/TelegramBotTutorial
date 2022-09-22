@@ -5,6 +5,7 @@ import dev.inmo.plagubot.Plugin
 import dev.inmo.plagubot.plugins.commands.full
 import dev.inmo.tgbotapi.bot.exceptions.RequestException
 import dev.inmo.tgbotapi.extensions.api.answers.answer
+import dev.inmo.tgbotapi.extensions.api.delete
 import dev.inmo.tgbotapi.extensions.api.edit.edit
 import dev.inmo.tgbotapi.extensions.api.send.reply
 import dev.inmo.tgbotapi.extensions.api.send.send
@@ -81,10 +82,13 @@ class WelcomePlugin : Plugin {
         val user = groupMessage.user
 
         if (adminsCacheAPI.isAdmin(groupMessage.chat.id, user.id)) {
+            val previousMessage = welcomeTable.get(groupMessage.chat.id)
             val sentMessage = send(
                 user,
                 replyMarkup = flatInlineKeyboard {
-                    dataButton("Unset", unsetData)
+                    if (previousMessage != null) {
+                        dataButton("Unset", unsetData)
+                    }
                     dataButton("Cancel", cancelData)
                 }
             ) {
@@ -115,9 +119,7 @@ class WelcomePlugin : Plugin {
                         it.data == cancelData && it.message.sameMessage(sentMessage)
                     }.first()
 
-                    edit(
-                        sentMessage
-                    ) {
+                    edit(sentMessage) {
                         regular("You have cancelled change of welcome message for chat ")
                         underline(groupMessage.chat.title)
                     }
@@ -148,6 +150,7 @@ class WelcomePlugin : Plugin {
                             underline(groupMessage.chat.title)
                         }
                     }
+                    delete(sentMessage)
                 },
                 parallel {
                     while (isActive) {
