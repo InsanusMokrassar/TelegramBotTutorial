@@ -1,5 +1,3 @@
-import WelcomePlugin.Companion.pluginConfigSectionName
-import WelcomePlugin.Config
 import db.WelcomeTable
 import dev.inmo.kslog.common.logger
 import dev.inmo.plagubot.Plugin
