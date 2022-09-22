@@ -1,4 +1,5 @@
 import db.WelcomeTable
+import dev.inmo.kslog.common.e
 import dev.inmo.kslog.common.logger
 import dev.inmo.plagubot.Plugin
 import dev.inmo.plagubot.plugins.commands.full
@@ -196,7 +197,7 @@ class WelcomePlugin : Plugin {
                     chatSettings.sourceMessageId
                 )
             } catch (e: RequestException) {
-                welcomeTable.unset(it.chat.id)
+                log.e("Unable to send welcome message", e)
             }
         }
     }
