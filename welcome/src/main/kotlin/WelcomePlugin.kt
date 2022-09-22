@@ -190,15 +190,11 @@ class WelcomePlugin : Plugin {
                 return@onNewChatMembers
             }
 
-            try {
-                reply(
-                    it,
-                    chatSettings.sourceChatId,
-                    chatSettings.sourceMessageId
-                )
-            } catch (e: RequestException) {
-                log.e("Unable to send welcome message", e)
-            }
+            reply(
+                it,
+                chatSettings.sourceChatId,
+                chatSettings.sourceMessageId
+            )
         }
     }
 
