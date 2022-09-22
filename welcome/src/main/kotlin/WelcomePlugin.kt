@@ -15,9 +15,11 @@ import dev.inmo.tgbotapi.extensions.behaviour_builder.triggers_handling.onNewCha
 import dev.inmo.tgbotapi.extensions.utils.extensions.sameChat
 import dev.inmo.tgbotapi.extensions.utils.extensions.sameMessage
 import dev.inmo.tgbotapi.extensions.utils.formatting.bold
+import dev.inmo.tgbotapi.extensions.utils.ifCommonGroupContentMessage
 import dev.inmo.tgbotapi.extensions.utils.types.buttons.dataButton
 import dev.inmo.tgbotapi.extensions.utils.types.buttons.flatInlineKeyboard
 import dev.inmo.tgbotapi.extensions.utils.whenCommonGroupContentMessage
+import dev.inmo.tgbotapi.libraries.cache.admins.AdminsCacheAPI
 import dev.inmo.tgbotapi.types.BotCommand
 import dev.inmo.tgbotapi.types.MilliSeconds
 import dev.inmo.tgbotapi.types.chat.GroupChat
@@ -73,13 +75,14 @@ class WelcomePlugin : Plugin {
     }
 
     private suspend fun BehaviourContext.handleWelcomeCommand(
+        adminsCacheAPI: AdminsCacheAPI,
         welcomeTable: WelcomeTable,
         config: Config,
         groupMessage: CommonGroupContentMessage<MessageContent>
     ) {
         val user = groupMessage.user
 
-        if (userIsAdmin(user, groupMessage.chat)) {
+        if (adminsCacheAPI.isAdmin(groupMessage.chat.id, user.id)) {
             val sentMessage = send(
                 user,
                 replyMarkup = flatInlineKeyboard {
@@ -152,8 +155,8 @@ class WelcomePlugin : Plugin {
                     while (isActive) {
                         delay(config.recheckOfAdmin)
 
-                        if (!userIsAdmin(user, groupMessage.chat)) {
-                            edit(sentMessage, "Sorry, but you are not admin in chat ${groupMessage.chat.title} more")
+                        if (adminsCacheAPI.isAdmin(groupMessage.chat.id, user.id)) {
+                            edit(sentMessage, "Sorry, but you are not admin in chat ${groupMessage.chat.title} anymore")
                             break
                         }
                     }
@@ -169,14 +172,15 @@ class WelcomePlugin : Plugin {
         val config = koin.get<Config>()
 
         val welcomeTable = koin.get<WelcomeTable>()
+        val adminsCacheAPI = koin.get<AdminsCacheAPI>()
 
         onCommand(
             "welcome",
             initialFilter = { it.chat is GroupChat }
         ) {
-            it.whenCommonGroupContentMessage { groupMessage ->
+            it.ifCommonGroupContentMessage { groupMessage ->
                 launch {
-                    handleWelcomeCommand(welcomeTable, config, groupMessage)
+                    handleWelcomeCommand(adminsCacheAPI, welcomeTable, config, groupMessage)
                 }
             }
         }

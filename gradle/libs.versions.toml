@@ -4,6 +4,7 @@ kotlin = "1.7.10"
 plagubot = "2.3.3"
 kslog = "0.5.2"
 plagubot-commands = "0.3.4"
+tgbotapi-libraries = "0.5.4"
 
 [libraries]
 
@@ -11,6 +12,7 @@ kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin"
 plagubot = { module = "dev.inmo:plagubot.bot", version.ref = "plagubot" }
 plagubot-plugin = { module = "dev.inmo:plagubot.plugin", version.ref = "plagubot" }
 plagubot-commands = { module = "dev.inmo:plagubot.plugins.commands", version.ref = "plagubot-commands" }
+tgbotapi-libraries-admins = { module = "dev.inmo:tgbotapi.libraries.cache.admins.plagubot", version.ref = "tgbotapi-libraries" }
 kslog = { module = "dev.inmo:kslog", version.ref = "kslog" }
 
 # Libs for classpath
