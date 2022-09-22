@@ -14,11 +14,9 @@ import dev.inmo.tgbotapi.extensions.behaviour_builder.triggers_handling.onComman
 import dev.inmo.tgbotapi.extensions.behaviour_builder.triggers_handling.onNewChatMembers
 import dev.inmo.tgbotapi.extensions.utils.extensions.sameChat
 import dev.inmo.tgbotapi.extensions.utils.extensions.sameMessage
-import dev.inmo.tgbotapi.extensions.utils.formatting.bold
 import dev.inmo.tgbotapi.extensions.utils.ifCommonGroupContentMessage
 import dev.inmo.tgbotapi.extensions.utils.types.buttons.dataButton
 import dev.inmo.tgbotapi.extensions.utils.types.buttons.flatInlineKeyboard
-import dev.inmo.tgbotapi.extensions.utils.whenCommonGroupContentMessage
 import dev.inmo.tgbotapi.libraries.cache.admins.AdminsCacheAPI
 import dev.inmo.tgbotapi.types.BotCommand
 import dev.inmo.tgbotapi.types.MilliSeconds
@@ -26,8 +24,7 @@ import dev.inmo.tgbotapi.types.chat.GroupChat
 import dev.inmo.tgbotapi.types.commands.BotCommandScope
 import dev.inmo.tgbotapi.types.message.abstracts.CommonGroupContentMessage
 import dev.inmo.tgbotapi.types.message.content.MessageContent
-import dev.inmo.tgbotapi.utils.regular
-import dev.inmo.tgbotapi.utils.underline
+import dev.inmo.tgbotapi.utils.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
