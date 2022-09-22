@@ -26,6 +26,8 @@ import dev.inmo.tgbotapi.types.commands.BotCommandScope
 import dev.inmo.tgbotapi.types.message.abstracts.CommonGroupContentMessage
 import dev.inmo.tgbotapi.types.message.content.MessageContent
 import dev.inmo.tgbotapi.types.message.content.TextContent
+import dev.inmo.tgbotapi.utils.regular
+import dev.inmo.tgbotapi.utils.underline
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
@@ -79,17 +81,16 @@ class WelcomePlugin : Plugin {
         val user = groupMessage.user
 
         if (userIsAdmin(user, groupMessage.chat)) {
-            val sentMessage = sendMessage(
+            val sentMessage = send(
                 user,
-                buildEntities {
-                    regular("Ok, send me the message which should be used as welcome message for chat ")
-                    underline(groupMessage.chat.title)
-                },
                 replyMarkup = flatInlineKeyboard {
                     dataButton("Unset", unsetData)
                     dataButton("Cancel", cancelData)
                 }
-            )
+            ) {
+                regular("Ok, send me the message which should be used as welcome message for chat ")
+                underline(groupMessage.chat.title)
+            }
 
             oneOf(
                 parallel {
@@ -97,7 +98,7 @@ class WelcomePlugin : Plugin {
                         it.data == unsetData && it.message.sameMessage(sentMessage)
                     }.first()
 
-                    val answerEntities = buildEntities {
+                    edit(sentMessage) {
                         if (welcomeTable.unset(groupMessage.chat.id)) {
                             regular("Welcome message has been removed for chat ")
                             underline(groupMessage.chat.title)
@@ -107,11 +108,6 @@ class WelcomePlugin : Plugin {
                         }
                     }
 
-                    edit(
-                        sentMessage,
-                        answerEntities
-                    )
-
                     answer(query)
                 },
                 parallel {
@@ -120,12 +116,11 @@ class WelcomePlugin : Plugin {
                     }.first()
 
                     edit(
-                        sentMessage,
-                        buildEntities {
-                            regular("You have cancelled change of welcome message for chat ")
-                            underline(groupMessage.chat.title)
-                        }
-                    )
+                        sentMessage
+                    ) {
+                        regular("You have cancelled change of welcome message for chat ")
+                        underline(groupMessage.chat.title)
+                    }
 
                     answer(query)
                 },
@@ -142,7 +137,7 @@ class WelcomePlugin : Plugin {
                         )
                     )
 
-                    val entities = buildEntities {
+                    reply(message) {
                         if (success) {
                             regular("Welcome message has been changed for chat ")
                             underline(groupMessage.chat.title)
@@ -153,10 +148,6 @@ class WelcomePlugin : Plugin {
                             underline(groupMessage.chat.title)
                         }
                     }
-                    reply(
-                        message,
-                        entities
-                    )
                 },
                 parallel {
                     while (isActive) {
