@@ -1,10 +1,10 @@
 [versions]
 
-kotlin = "1.7.10"
-plagubot = "2.3.3"
-kslog = "0.5.2"
-plagubot-commands = "0.3.4"
-tgbotapi-libraries = "0.5.4"
+kotlin = "1.7.21"
+plagubot = "3.1.0"
+kslog = "0.5.3"
+plagubot-commands = "0.6.1"
+tgbotapi-libraries = "0.6.1"
 
 [libraries]
 
