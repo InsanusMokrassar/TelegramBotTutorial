@@ -3,8 +3,10 @@ package db
 import dev.inmo.micro_utils.repos.exposed.ExposedRepo
 import dev.inmo.micro_utils.repos.exposed.initTable
 import dev.inmo.tgbotapi.types.ChatId
+import dev.inmo.tgbotapi.types.IdChatIdentifier
 import model.ChatSettings
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
 internal class WelcomeTable(
@@ -19,7 +21,7 @@ internal class WelcomeTable(
         initTable()
     }
 
-    fun get(chatId: ChatId): ChatSettings? = transaction(database) {
+    fun get(chatId: IdChatIdentifier): ChatSettings? = transaction(database) {
         select { targetChatIdColumn.eq(chatId.chatId) }.limit(1).firstOrNull() ?.let {
             ChatSettings(
                 ChatId(it[targetChatIdColumn]),
@@ -38,7 +40,7 @@ internal class WelcomeTable(
         }.insertedCount > 0
     }
 
-    fun unset(chatId: ChatId): Boolean = transaction(database) {
+    fun unset(chatId: IdChatIdentifier): Boolean = transaction(database) {
         deleteWhere { targetChatIdColumn.eq(chatId.chatId) } > 0
     }
 }
