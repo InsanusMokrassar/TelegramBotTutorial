@@ -1,10 +1,10 @@
 [versions]
 
 kotlin = "1.7.22"
-plagubot = "3.2.2"
+plagubot = "3.3.0"
 kslog = "0.5.4"
-plagubot-commands = "0.6.6"
-tgbotapi-libraries = "0.6.7"
+plagubot-commands = "0.7.0"
+tgbotapi-libraries = "0.7.0"
 
 [libraries]
 
