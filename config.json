@@ -2,6 +2,7 @@
   "botToken": "1234567890:ABCDEFGHIJKLMNOP_qrstuvwxyz12345678",
   "plugins": [
     "dev.inmo.plagubot.plugins.commands.CommandsPlugin",
+    "dev.inmo.tgbotapi.libraries.cache.admins.AdminsPlugin",
 
     "IntroductionPlugin",
     "WelcomePlugin"
