@@ -1,7 +1,7 @@
 version: "3.4"
 
 services:
-  adminbot:
+  runner:
     image: user/runner
     container_name: runner
     restart: unless-stopped
