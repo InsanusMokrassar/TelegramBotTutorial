@@ -2,7 +2,6 @@ FROM adoptopenjdk/openjdk11
 
 USER 1000
 
-ENTRYPOINT ["/runner/bin/runner", "/runner/local.config.json"]
+ENTRYPOINT ["/runner/bin/runner", "/runner/config.json"]
 
 ADD ./build/distributions/runner.tar /
-ADD ./local.config.json /runner/
