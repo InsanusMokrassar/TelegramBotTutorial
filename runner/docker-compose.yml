@@ -1,0 +1,10 @@
+version: "3.4"
+
+services:
+  adminbot:
+    image: user/runner
+    container_name: runner
+    restart: unless-stopped
+    volumes:
+      - "./data/:/data/"
+      - "./config.json:/config.json:ro"

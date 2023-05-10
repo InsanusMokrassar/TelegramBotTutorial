@@ -1,0 +1,5 @@
+{
+   "module_name": "Sample",
+   "module_package": "{{.module_name.lowercase()}}",
+   "module_path": "{{.module_package.replace('.', '/')}}"
+}

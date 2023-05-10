@@ -2,3 +2,4 @@ rootProject.name = "tutorial"
 
 include ":introduction"
 include ":welcome"
+include ":runner"

@@ -1,0 +1,15 @@
+{
+  "botToken": "1234567890:ABCDEFGHIJKLMNOP_qrstuvwxyz12345678",
+  "plugins": [
+    "dev.inmo.plagubot.plugins.commands.CommandsPlugin",
+
+    "IntroductionPlugin",
+    "WelcomePlugin"
+  ],
+  "introduction": {
+    "onStartCommandMessage": "Hello World"
+  },
+  "database": {
+    "url": "jdbc:sqlite:file:/data/local.db"
+  }
+}
